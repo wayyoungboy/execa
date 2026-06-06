@@ -8,7 +8,7 @@
 
 Although each OS implements subprocesses very differently, Execa makes them cross-platform, except in a few instances.
 
-## Shebang
+## Executable files
 
 On Unix, executable files can use [shebangs](https://en.wikipedia.org/wiki/Shebang_(Unix)).
 
@@ -22,7 +22,21 @@ await execa`./script.js`;
 await execa`node ./script.js`;
 ```
 
-Although Windows does not natively support shebangs, Execa adds support for them.
+Although Windows does not natively support shebangs, Execa adds support for them. This also works with executable files that contain spaces.
+
+```js
+await execa`./script with space.js`;
+```
+
+Windows uses [`PATHEXT`](https://ss64.com/nt/path.html#pathext) to decide which file extensions are executable, such as `.exe`, `.cmd`, `.bat` or `.ps1`. Execa supports this too, so the file extension can be omitted.
+
+```js
+await execa`npm`;
+```
+
+Those features are handled without using any [shell](shell.md). Under the hood, Execa relies on [`cross-spawn`](https://github.com/moxystudio/node-cross-spawn) to find executable files with `PATHEXT`, read their shebang and run them with proper Windows escaping.
+
+With [`shell: true`](api.md#optionsshell), Windows uses [`cmd.exe`](https://en.wikipedia.org/wiki/Cmd.exe). This can find executable files with `PATHEXT`, but does not add Execa's shebang support, and shell-specific quoting is still required.
 
 ## Signals
 

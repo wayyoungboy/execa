@@ -33,6 +33,8 @@ When the [`shell`](api.md#optionsshell) option is `true`, `sh` is used on Unix a
 await execa({shell: true})`npm run build`;
 ```
 
+On Windows, `cmd.exe` can find executable files using [`PATHEXT`](windows.md#executable-files). However, Execa already supports `PATHEXT`, [shebangs](windows.md#executable-files), and [files with spaces](windows.md#escaping) without a shell. `shell: true` also means shell-specific quoting is required, and it does not add Execa's shebang support.
+
 <hr>
 
 [**Next**: 📜 Scripts](scripts.md)\
